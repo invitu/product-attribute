@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_product_form" model="ir.ui.view">
+        <field name="name">product_multi_relation.view_product_form</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                    name="preview_child_list"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-sitemap"
+                    >
+                    <field string="Children" name="child_count" widget="statinfo" />
+                </button>
+                <button
+                    name="preview_parent_list"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-sitemap"
+                    >
+                    <field string="Parents" name="parent_count" widget="statinfo" />
+                </button>
+            </div>
+            <field name="categ_id" position="after">
+                <field name="child_ids" widget="many2many_tags" />
+                <field name="parent_ids" widget="many2many_tags" />
+            </field>
+        </field>
+    </record>
+    <record id="product_search_form_view" model="ir.ui.view">
+        <field name="name">product.product.search</field>
+        <field name="model">product.product</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="arch" type="xml">
+            <filter name="categ_id" position="after">
+                <separator />
+                <filter
+                    string="Has Children"
+                    name="has_children"
+                    domain="[('child_ids', '!=', False)]"
+                    />
+                <filter
+                    string="Has Parents"
+                    name="has_parents"
+                    domain="[('parent_ids', '!=', False)]"
+                    />
+            </filter>
+        </field>
+    </record>
+</odoo>
